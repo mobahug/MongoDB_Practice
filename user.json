@@ -1,0 +1,19 @@
+{
+	"name": "Jeff Bezos",
+	"age": 42,
+	"hobbies": [
+		{
+			"title": "Business",
+			"description": "Creating businesses"
+		},
+		{
+			"title": "Coding",
+			"description": "Creating Websites and services"
+		}
+	],
+	"address": {
+		"city": "SF",
+		"street": "Rock"
+	},
+	"networth": 182000000000
+}
