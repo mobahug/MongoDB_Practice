@@ -1,0 +1,91 @@
+JOINING TABLES WITH AGGREATE
+
+
+AUTHORS COLLECTION CREATIONS
+
+CREATE:
+
+db.authors.insertMany([{name: ”Mark”, surname: ”Zuckerberg”,  age: 29, address: {city: “SF”, street: “Treet”}}, {name: “Bill”, surname: “Gates”, age: 60, address: {city: “SF”, street: “Rock”}}])
+
+SHOW
+
+> db.authors.find().pretty()
+{
+	"_id" : ObjectId("6396f5b727dd6878031ada4b"),
+	"name" : "Mark",
+	"surname" : "Zuckerberg",
+	"age" : 29,
+	"address" : {
+		"city" : "SF",
+		"street" : "Tree"
+	}
+}
+{
+	"_id" : ObjectId("6396f5b727dd6878031ada4c"),
+	"name" : "Bill",
+	"surname" : "Gates",
+	"age" : 60,
+	"address" : {
+		"city" : "SF",
+		"street" : "Rock"
+	}
+}
+
+
+INSERT AUTHORS ID INTO BOOKS AUTHORLIST:
+
+CREATE:
+
+db.books.insertOne({title: “This is book one”, price: 40, authorsList: [ObjectId("6396f5b727dd6878031ada4b”), ObjectId("6396f5b727dd6878031ada4c")]})
+
+SHOW:
+
+> db.books.find().pretty()
+{
+	"_id" : ObjectId("6396f61e27dd6878031ada4d"),
+	"title" : "This is book one",
+	"price" : 40,
+	"authorsList" : [
+		ObjectId("6396f5b727dd6878031ada4b"),
+		ObjectId("6396f5b727dd6878031ada4c")
+	]
+}
+
+
+JOIN TABLES SO WE CAN SEE AUTHORLISTS DATA IN BOOKS COLLECTIONS:
+
+JOINT:
+
+db.books.aggregate([{$lookup: {from: "authors", localField: "authorsList", foreignField: "_id", as: "authorsList"}}]).pretty()
+
+SHOW:
+
+> db.books.find().pretty()
+{
+	"_id" : ObjectId("6396f61e27dd6878031ada4d"),
+	"title" : "This is book one",
+	"price" : 40,
+	"authorsList" : [
+		{
+			"_id" : ObjectId("6396f5b727dd6878031ada4b"),
+			"name" : "Mark",
+			"surname" : "Zuckerberg",
+			"age" : 29,
+			"address" : {
+				"city" : "SF",
+				"street" : "Tree"
+			}
+		},
+		{
+			"_id" : ObjectId("6396f5b727dd6878031ada4c"),
+			"name" : "Bill",
+			"surname" : "Gates",
+			"age" : 60,
+			"address" : {
+				"city" : "SF",
+				"street" : "Rock"
+			}
+		}
+	]
+}
+

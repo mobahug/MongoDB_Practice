@@ -1,0 +1,88 @@
+RELATIONAL DATABASE EXAMPLE
+
+In this example we have two collections/tables and we take from the items two _id number
+and updating the sales collection items part with those ids.
+
+
+ITEM COLLECTIONS
+
+> db.items.find().pretty()
+{
+	"_id" : ObjectId("63972edc27dd6878031ada50"),
+	"title" : "printer paper",
+	"price" : 40
+}
+{
+	"_id" : ObjectId("63972edc27dd6878031ada51"),
+	"title" : "notepad",
+	"price" : 35
+}
+
+
+BEFORE UPDATE:
+
+> db.sales.find().pretty()
+{
+	"_id" : ObjectId("6396f11627dd6878031ada46"),
+	"saleDate" : ISODate("2022-12-12T09:15:02.348Z"),
+	"items" : [
+		{
+			"name" : "printerpaper",
+			"price" : 40,
+			"quantity" : 2
+		},
+		{
+			"name" : "notepad",
+			"price" : 35,
+			"quantity" : 5
+		}
+	],
+	"storeLocation" : "Denver",
+	"customer" : ObjectId("6396f09327dd6878031ada45"),
+	"couponUsed" : true,
+	"purchasedMethod" : "online",
+	"timestamp" : Timestamp(1670836502, 1),
+	"longNumber" : NumberLong("123456789123456789")
+}
+
+
+UPDATE:
+
+db.sales.updateOne({_id: ObjectId("6396f11627dd6878031ada46")},
+				{$set: {
+					items: [
+						{
+							item: ObjectId("63972edc27dd6878031ada50"), quantity: 2
+						},
+						{
+							item: ObjectId("63972edc27dd6878031ada51"), quantity: 5
+						}
+					]
+				}
+			})
+
+
+
+AFTER UPDATE SALES COLLECTION:
+
+> db.sales.find().pretty()
+{
+	"_id" : ObjectId("6396f11627dd6878031ada46"),
+	"saleDate" : ISODate("2022-12-12T09:15:02.348Z"),
+	"items" : [
+		{
+			"item" : ObjectId("63972edc27dd6878031ada50"),
+			"quantity" : 2
+		},
+		{
+			"item" : ObjectId("63972edc27dd6878031ada51"),
+			"quantity" : 5
+		}
+	],
+	"storeLocation" : "Denver",
+	"customer" : ObjectId("6396f09327dd6878031ada45"),
+	"couponUsed" : true,
+	"purchasedMethod" : "online",
+	"timestamp" : Timestamp(1670836502, 1),
+	"longNumber" : NumberLong("123456789123456789")
+}
